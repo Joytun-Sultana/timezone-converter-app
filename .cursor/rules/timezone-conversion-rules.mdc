@@ -1,0 +1,28 @@
+---
+alwaysApply: true
+---
+
+---
+description: Standards for UTC-first timezone conversion app (Vue 3 + TS)
+alwaysApply: true
+---
+
+# Timezone Conversion Project Rule
+
+- Tech stack is fixed: Vue 3 + TypeScript + Vite.
+- Keep business logic framework-agnostic in `src/domain` or `src/utils`; UI components must not contain timezone math.
+- Use UTC as the single source of truth:
+  - Convert user-selected local date/time to UTC immediately.
+  - Store and pass UTC values (ISO string or Date in UTC) between layers.
+  - Convert to target timezone only for display/output.
+- Maintain a typed country-to-timezone mapping using IANA timezone IDs (e.g., `Europe/Oslo`, `Asia/Dhaka`).
+- Implement one reusable conversion function with strong typing:
+  - Input: UTC datetime + target timezone.
+  - Output: converted datetime representation for the target timezone.
+  - Validate unsupported/invalid timezone input and return typed errors or safe failure results.
+- Prefer `Intl.DateTimeFormat` (or a well-justified library) and avoid custom offset arithmetic.
+- Testing is mandatory:
+  - Unit tests for conversion function must cover multiple timezone pairs, DST transitions, invalid timezone handling, and invalid UTC input handling.
+  - Keep tests deterministic (fixed timestamps, explicit expected outputs).
+- Tooling baseline must remain enabled and passing: ESLint, Prettier, Playwright, and Vitest (or Jest).
+- Any new feature/change that touches time logic must include or update unit tests first.
